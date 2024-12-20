@@ -1,0 +1,62 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+/* :root[data-theme='light'] {
+	--text: hsl(30, 6%, 7%);
+	--background: hsl(30, 15%, 92%);
+	--primary: hsl(30, 24%, 26%);
+	--secondary: hsl(28, 35%, 65%);
+	--accent: hsl(28, 45%, 43%);
+} */
+
+:root {
+	--text: 30, 6%, 93%;
+	--background: 30, 15%, 8%;
+	--primary: 29, 24%, 74%;
+	--secondary: 28, 35%, 35%;
+	--accent: 28, 45%, 57%;
+}
+
+body,
+html {
+	background: hsl(var(--background));
+}
+
+* {
+	@apply text-text-200;
+	font-family: 'Inter';
+}
+
+button {
+	background-color: transparent;
+	border: none;
+}
+
+button,
+textarea,
+input {
+	@apply bg-transparent rounded-md;
+
+	border: 2px solid hsl(var(--primary), 30%);
+	padding: 8px;
+}
+
+textarea:focus,
+input[type='text']:focus {
+	outline: none;
+	border-color: hsl(var(--primary), 90%);
+}
+
+textarea::placeholder,
+input::placeholder {
+	@apply select-none;
+	color: hsl(var(--primary), 20%);
+}
+
+input[type='checkbox'] {
+	@apply p-3;
+	border: 2px solid red;
+}
