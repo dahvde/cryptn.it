@@ -9,8 +9,6 @@ RUN go mod download
 
 COPY *.go ./
 
-RUN chmod +x /app/start.sh
-
 RUN CGO_ENABLED=0 GOOS=linux go build -o /app/pocketbase
 
 RUN /app/pocketbase superuser upsert admin@admin.com password123
