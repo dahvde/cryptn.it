@@ -8,7 +8,6 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY *.go ./
-COPY ./start.sh ./
 
 RUN chmod +x /app/start.sh
 
