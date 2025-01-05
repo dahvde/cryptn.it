@@ -23,7 +23,7 @@
 	loadIcons(['tabler:minus', 'tabler:plus']);
 </script>
 
-<div class="flex gap-4 justify-between">
+<div class="flex gap-4 justify-between items-center">
 	<button
 		onclick={() => {
 			count -= 1;

@@ -1,17 +1,11 @@
-import { databaseURI } from '$env/static/private';
+import { env } from '$env/dynamic/private';
+import { cryptoRandomStringAsync } from 'crypto-random-string';
 import PocketBase from 'pocketbase';
 
-export const pb = new PocketBase(databaseURI);
+export const pb = new PocketBase(`${env.dbURI}:${env.dbPORT}`);
 
-export function genURI(len = 4) {
-	const alpha = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	let res = [];
-
-	for (let i = 0; i < len; i++) {
-		res.push(alpha[Math.floor(Math.random() * alpha.length)]);
-	}
-
-	return res.join('');
+export async function genURI(len = 4) {
+	return await cryptoRandomStringAsync({ length: len, type: 'alphanumeric' });
 }
 
 export function APIResponse(message: string, status: number) {

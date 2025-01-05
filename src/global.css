@@ -18,15 +18,20 @@
 	--primary: 29, 24%, 74%;
 	--secondary: 28, 35%, 35%;
 	--accent: 28, 45%, 57%;
+
+	--date-picker-background: hsl(var(--background));
+	--date-picker-foreground: hsl(var(--primary));
+	--date-picker-highlight-border: hsl(var(--primary));
+	--date-input-width: 100%;
 }
 
 body,
 html {
+	@apply text-text-200;
 	background: hsl(var(--background));
 }
 
 * {
-	@apply text-text-200;
 	font-family: 'Inter';
 }
 
@@ -35,13 +40,39 @@ button {
 	border: none;
 }
 
+/* Override default styles */
+.date-time-picker,
+.date-time-field > input {
+	background: hsl(var(--background)) !important;
+
+	border: 2px solid hsl(var(--primary), 30%) !important;
+	padding: 8px !important;
+}
+
+.date-time-picker,
+.date-time-field > input,
+select,
 button,
 textarea,
 input {
-	@apply bg-transparent rounded-md;
+	@apply rounded-md !important;
+
+	background: hsl(var(--background));
 
 	border: 2px solid hsl(var(--primary), 30%);
 	padding: 8px;
+}
+
+.padding {
+	padding: 8px;
+}
+
+.border {
+	@apply rounded-md !important;
+
+	background: hsl(var(--background));
+
+	border: 2px solid hsl(var(--primary), 30%);
 }
 
 textarea:focus,

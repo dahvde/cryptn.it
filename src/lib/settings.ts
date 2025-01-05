@@ -1,4 +1,5 @@
 export default {
-	minHash: 5,
-	maxHash: 15
+	minHash: 4,
+	maxHash: 32,
+	maxChars: 20000
 };

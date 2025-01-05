@@ -1,4 +1,5 @@
 import { APIResponse, pb } from '$lib';
+import { env } from '$env/dynamic/private';
 import CryptoJS from 'crypto-js';
 
 export async function GET(req) {
@@ -11,21 +12,30 @@ export async function GET(req) {
 
 	if (query.has('password')) {
 		key += query.get('password');
+	} else if (query.has('p')) {
+		key += query.get('p');
 	}
 
 	try {
-		const query = await pb.collection('txt').getFullList({
+		// @ts-ignore
+		const query = await pb.collection(env.dbCollection).getFullList({
 			filter: pb.filter('hash ~ {:search}', { search: hashed })
 		});
 
 		if (!query.length) throw Error('File not found');
 
 		const decrypted = CryptoJS.AES.decrypt(query[0].text, key).toString(CryptoJS.enc.Utf8);
-		console.log(decrypted);
+
+		if (!decrypted.length) throw Error('File not found');
+
+		if (query[0].burn) {
+			// @ts-ignore
+			await pb.collection(env.dbCollection).delete(query[0].id);
+		}
 
 		return new Response(decrypted, { status: 200 });
 	} catch (err) {
-		console.error(err);
-		return APIResponse('File not found', 400);
+		console.log(err);
+		return APIResponse('Data does not exist', 404);
 	}
 }

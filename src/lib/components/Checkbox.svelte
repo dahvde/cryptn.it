@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte';
+	import Icon, { loadIcon } from '@iconify/svelte';
 	import clsx from 'clsx';
 	interface Props {
 		checked: boolean;
@@ -7,6 +7,8 @@
 	}
 
 	let { checked = $bindable(), class: CLASS }: Props = $props();
+
+	loadIcon('material-symbols:check-rounded');
 </script>
 
 <button

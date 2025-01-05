@@ -14,6 +14,7 @@ Thumbs.db
 
 # Env
 .env
+.envrc
 .env.*
 !.env.example
 !.env.test
@@ -25,3 +26,6 @@ vite.config.ts.timestamp-*
 .prettierrc
 .prettierignore
 .npmrc
+
+db/pocketbase
+db/pb_data
