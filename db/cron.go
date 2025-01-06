@@ -34,7 +34,7 @@ func main() {
 		collection.Fields.Add(&core.TextField {
 			Name:     "text",
 			Required: true,
-			Max:      0,
+			Max:      140000,
 		})
 
 		collection.Fields.Add(&core.TextField {

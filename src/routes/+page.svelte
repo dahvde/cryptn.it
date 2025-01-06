@@ -19,6 +19,8 @@
 		message: string | null;
 	};
 
+	let day = 24 * 60 * 60 * 1000;
+
 	let error: Error = $state({ type: null, message: null });
 	let customExpire = $state({ use: false, date: null });
 	let payload = $state({
@@ -28,12 +30,12 @@
 			use: false,
 			text: null
 		},
-		urlLength: 5,
+		urlLength: 9,
 		burn: false,
 		expire: 30
 	});
 
-	const maxChar = 20000;
+	const maxChar = 80000;
 
 	$effect(() => {
 		if (customExpire.use && customExpire.date) {
@@ -71,7 +73,7 @@
 			}
 		}
 
-		if (payload.expire < 1) {
+		if (payload.expire < 1 && payload.urlLength < 9) {
 			error.type = 'expire';
 			error.message = 'invalid expiration';
 			return;
@@ -134,14 +136,13 @@
 	]);
 </script>
 
-<div class="wrap lg:text-lg m-auto lg:mt-52 mt-12 text-3xl">
+<div class="wrap lg:text-lg m-auto lg:mt-20 mt-12 text-3xl">
 	<div class="flex lg:flex-row flex-col gap-4 justify-center w-full">
 		<div class="relative contain flex-1">
 			<textarea
 				name="txt"
 				id="txt"
-				placeholder="Text goes here btw..."
-				class="w-full lg:h-full sm:h-96"
+				class="w-full lg:h-full max-lg:h-96"
 				bind:value={payload.input}
 				maxlength={maxChar}
 			>
@@ -161,7 +162,7 @@
 			<button id="submit" onclick={submit}>Submit</button>
 			<div class="border flex items-center" use:copyLink>
 				<input
-					class="border-none flex-1 cursor-pointer"
+					class="border-none flex-1 cursor-pointer w-full"
 					value={payload.link}
 					type="text"
 					readonly={true}
@@ -203,33 +204,30 @@
 							min={new Date(new Date().getTime() + 1000)}
 							max={new Date(
 								new Date().getTime() +
-									(payload.urlLength == 4 ? 24 * 60 * 60 * 1000 : 30 * 24 * 60 * 60 * 1000)
+									(payload.urlLength == 4
+										? 2 * day
+										: payload.urlLength >= 9
+											? 1826 * day
+											: 30 * day)
 							)}
 							timePrecision="minute"
 						/>
 					{:else}
 						<select class="focus:bg-bg-700 flex-1" bind:value={payload.expire}>
-							{#if payload.urlLength == 4}
-								<option value={15}> 60 Seconds </option>
-								<option value={15}> 5 Minutes </option>
-								<option value={15}> 15 Minutes </option>
-								<option value={30}> 30 Minutes </option>
-								<option value={60}> 1 Hour </option>
-								<option value={60 * 3}> 3 Hours </option>
-								<option value={60 * 6}> 6 Hours </option>
-								<option value={60 * 24}> 24 Hours </option>
+							<option value={15}> 60 Seconds </option>
+							<option value={30}> 30 Minutes </option>
+							<option value={60}> 1 Hour </option>
+							<option value={60 * 6}> 6 Hours </option>
+							<option value={60 * 24}> 24 Hours </option>
+							{#if payload.urlLength == 4 && !payload.password.use}
 								<option value={60 * 48}> 2 Days </option>
 							{:else}
-								<option value={15}> 60 Seconds </option>
-								<option value={15}> 5 Minutes </option>
-								<option value={15}> 15 Minutes </option>
-								<option value={30}> 30 Minutes </option>
-								<option value={60}> 1 Hour </option>
-								<option value={60 * 3}> 3 Hours </option>
-								<option value={60 * 6}> 6 Hours </option>
-								<option value={60 * 24}> 24 Hours </option>
 								<option value={60 * 24 * 7}> 7 days </option>
 								<option value={60 * 24 * 30}> 30 days </option>
+							{/if}
+
+							{#if payload.urlLength >= 9}
+								<option value={0}>Never</option>
 							{/if}
 						</select>
 					{/if}
@@ -265,7 +263,6 @@
 			/>
 		</div>
 	</div>
-	<p class="mt-4 text-center">Mobile is work in progress</p>
 </div>
 
 <style>
