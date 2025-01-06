@@ -1,38 +1,67 @@
-# sv
+<p align="center">
+    <a href="https://cryptn.it" target="_blank" rel="noopener">
+        <img src="https://i.imgur.com/DagbkPo.png" alt="Cryptn.it - Secure temporary text storage" />
+    </a>
+</p>
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+<p align="center">
+	<a href="https://github.com/dahvde/cryptn.it/blob/main/LICENSE">
+		<img alt="GitHub License" src="https://img.shields.io/github/license/dahvde/cryptn.it">
+    </a>
+</p>
 
-## Creating a project
+A simple and open source temporary text storage. With the use of AES encryption, text stored on the server is only accessable with the correct hash and or password. The public webapp allows url hash sizes from 4-32 characters, which can be changed to be smaller or larger when locally hosted.
 
-If you're seeing this, you've probably already done this step. Congrats!
+# Overview
 
-```bash
-# create a new project in the current directory
-npx sv create
+## How does it work?
 
-# create a new project in my-app
-npx sv create my-app
+```
+// Variables are all caps
+// Variables surrounded by brackets indicate new variables equal to their adjacent function
+// Variables with a questionmark are optional
+
+[Client] (payload: TEXT, STRLENGTH, PASSWORD?, ...) -> Server
+	[Server] Generates a random string of characters [RNDSTR] - randomStr(STRLENGTH)
+    [Server] Uses AES to encrypt text and uses RNDSTR as the password [ENCTEXT] - aes(TEXT, RNDSTR+PASSWORD?)
+    [Server] RNDSTR then gets put into a SHA256 hashing function [HASH] - sha256(RNDSTR)
+    [Server] Sql command get executed to store data - SQL(ENCTEXT, HASH, ...)
+    [Server] Returns RNDSTR to the client
+[Client] Combines RNDSTR with the url to direct the users to the stored text - https://cryptn.it/RNDSTR
 ```
 
-## Developing
+## Installation
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+#### Requirements:
 
-```bash
-npm run dev
+- [docker](https://docs.docker.com/engine/install/)
+- git
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```
+git clone https://github.com/dahvde/cryptn.it
 ```
 
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
+```
+cd cryptn.it
 ```
 
-You can preview the production build with `npm run preview`.
+```
+docker-compose up -d
+```
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## Uninstall
+
+```
+cd cryptn.it
+```
+
+```
+docker-compose down --rmi all
+```
+
+## Future Updates
+
+- Integrate zero-knowledge
+- Allow data to be changed
+- Add UI for text viewing
+- Allow for public sharing
