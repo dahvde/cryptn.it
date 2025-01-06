@@ -7,13 +7,4 @@ services:
       - dbCollection=cryptdata
       - dbPORT=8090
       - PORT=3030
-      - dbURI=http://pocketbase
-    depends_on:
-      - pocketbase
-  pocketbase:
-    build:
-      context: ./db
-      args:
-        dbPORT: 8090
-    ports:
-      - '8090:8090'
+      - dbURI=http://localhost
