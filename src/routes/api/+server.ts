@@ -3,6 +3,7 @@ import { env } from '$env/dynamic/private';
 import settings from '$lib/settings.js';
 import CryptoJS from 'crypto-js';
 import moment from 'moment';
+import { maxChars, maxShortExpire, minShortExpire } from '$lib/settings.js';
 
 type RequestBody = {
 	input: string;
@@ -21,10 +22,6 @@ type RecordBody = {
 	expire: Date | null;
 };
 
-const maxPayload = 20000;
-const maxExpire = 60 * 24 * 30;
-const minExpire = 1;
-
 async function validatePayload(body: RequestBody) {
 	try {
 		if (body.error) throw body.error;
@@ -36,22 +33,24 @@ async function validatePayload(body: RequestBody) {
 		}
 
 		if (typeof body.expire != 'number') throw '@expire does not exist or invalid type';
-		if (body.expire > maxExpire) throw '@expire too long';
-		if (body.expire < minExpire) throw '@expire too short';
+		if (body.expire < 0) throw '@expire invalid';
+
+		if (body.hashLength < 9) {
+			if (body.expire > maxShortExpire) throw '@expire too long';
+			if (body.expire < minShortExpire) throw '@expire too short';
+			if (body.hashLength == 4 && body.expire > 60 * 24)
+				throw '@hashLength/expire are not in acceptable range';
+		}
 
 		if (typeof body.input != 'string') throw '@input does not exist or invalid type';
 		if (body.input.length == 0) throw '@input payload is empty';
-		if (body.input.length > maxPayload) throw '@input payload too large';
+		if (body.input.length > maxChars) throw '@input payload too large';
 
 		if (typeof body.hashLength != 'number') throw '@hashLength does not exist or invalid type';
 		if (body.hashLength > settings.maxHash) throw '@hashLength too large';
 		if (body.hashLength < settings.minHash) throw '@hashLength too small';
 
 		if (typeof body.burn != 'boolean') throw '@burn does not exist or invalid type';
-
-		// Special cases
-		if (body.hashLength == 4 && body.expire > 60 * 48)
-			throw '@hashLength/expire are not in acceptable range';
 	} catch (err) {
 		console.log(err);
 		return err;
@@ -71,6 +70,10 @@ export async function POST(req) {
 
 		if (error) {
 			return APIResponse(error, 400);
+		}
+
+		if (body.expire == 0) {
+			body.expire = 60 * 24 * 30 * 1000;
 		}
 
 		let dbData: RecordBody = {
