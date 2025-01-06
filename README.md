@@ -23,10 +23,10 @@ A simple and open source temporary text storage. With the use of AES encryption,
 
 [Client] (payload: TEXT, STRLENGTH, PASSWORD?, ...) -> Server
 	[Server] Generates a random string of characters [RNDSTR] - randomStr(STRLENGTH)
-    [Server] Uses AES to encrypt text and uses RNDSTR as the password [ENCTEXT] - aes(TEXT, RNDSTR+PASSWORD?)
-    [Server] RNDSTR then gets put into a SHA256 hashing function [HASH] - sha256(RNDSTR)
-    [Server] Sql command get executed to store data - SQL(ENCTEXT, HASH, ...)
-    [Server] Returns RNDSTR to the client
+	[Server] Uses AES to encrypt text and uses RNDSTR as the password [ENCTEXT] - aes(TEXT, RNDSTR+PASSWORD?)
+    	[Server] RNDSTR then gets put into a SHA256 hashing function [HASH] - sha256(RNDSTR)
+    	[Server] Sql command get executed to store data - SQL(ENCTEXT, HASH, ...)
+    	[Server] Returns RNDSTR to the client
 [Client] Combines RNDSTR with the url to direct the users to the stored text - https://cryptn.it/RNDSTR
 ```
 
