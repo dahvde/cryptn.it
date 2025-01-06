@@ -4,14 +4,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-/* :root[data-theme='light'] {
-	--text: hsl(30, 6%, 7%);
-	--background: hsl(30, 15%, 92%);
-	--primary: hsl(30, 24%, 26%);
-	--secondary: hsl(28, 35%, 65%);
-	--accent: hsl(28, 45%, 43%);
-} */
-
 :root {
 	--text: 30, 6%, 93%;
 	--background: 30, 15%, 8%;
@@ -29,6 +21,19 @@ body,
 html {
 	@apply text-text-200;
 	background: hsl(var(--background));
+	height: 100%;
+}
+
+select {
+	appearance: none;
+}
+
+hr {
+	border-color: hsl(var(--primary), 20%);
+}
+
+html {
+	touch-action: manipulation;
 }
 
 * {
@@ -90,4 +95,10 @@ input::placeholder {
 input[type='checkbox'] {
 	@apply p-3;
 	border: 2px solid red;
+}
+
+@media only screen and (max-width: 768px) {
+	html {
+		font-size: 10px;
+	}
 }
