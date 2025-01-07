@@ -6,8 +6,9 @@
 
 <p align="center">
 	<a href="https://github.com/dahvde/cryptn.it/blob/main/LICENSE">
-		<img alt="GitHub License" src="https://img.shields.io/github/license/dahvde/cryptn.it">
-    </a>
+		<img alt="GitHub License" src="https://img.shields.io/github/license/dahvde/cryptn.it?style=for-the-badge">
+    	</a>
+	<img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/dahvde/cryptn.it/docker-image.yml?style=for-the-badge">
 </p>
 
 A simple and open source temporary text storage. With the use of AES encryption, text stored on the server is only accessable with the correct hash and or password. The public webapp allows url hash sizes from 4-32 characters, which can be changed to be smaller or larger when locally hosted.
