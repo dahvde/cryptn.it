@@ -5,9 +5,7 @@
 </p>
 
 <p align="center">
-	<a href="https://github.com/dahvde/cryptn.it/blob/main/LICENSE">
-		<img alt="GitHub License" src="https://img.shields.io/github/license/dahvde/cryptn.it?style=for-the-badge">
-    	</a>
+	<a href="https://github.com/dahvde/cryptn.it/blob/main/LICENSE"><img alt="GitHub License" src="https://img.shields.io/github/license/dahvde/cryptn.it?style=for-the-badge"></a>
 	<img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/dahvde/cryptn.it/docker-image.yml?style=for-the-badge">
 </p>
 
