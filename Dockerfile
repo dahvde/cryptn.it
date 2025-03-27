@@ -15,19 +15,23 @@ WORKDIR /db
 COPY ./db /db
 RUN go mod download
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /db/pocketbase
-
-RUN /db/pocketbase superuser upsert admin@admin.com password123
+RUN CGO_ENABLED=0 GOOS=linux go build -o /db/run
 
 
 FROM node:20-alpine
 WORKDIR /app
 
-COPY --from=go-build /db/pocketbase /app/db/pocketbase
-COPY --from=builder /staging/start.sh /staging/package.json /staging/pnpm-lock.yaml  /app/
+COPY --from=go-build /db/run /var/lib/pocketbase/run
+COPY --from=builder /staging/scripts/start.sh /staging/package.json /staging/pnpm-lock.yaml  /app/
 COPY --from=builder /staging/node_modules /app/node_modules
 COPY --from=builder /staging/build /app/build
 
-RUN /app/db/pocketbase superuser upsert admin@admin.com password123
+ARG PB_EMAIL
+ARG PB_PASSWORD
+
+ENV PB_EMAIL=${PB_EMAIL?emailnotfound}
+ENV PB_PASSWORD=${PB_PASSWORD?passwordnotfound}
+
+RUN /var/lib/pocketbase/run superuser upsert $PB_EMAIL $PB_PASSWORD
 
 CMD ["sh", "/app/start.sh"]

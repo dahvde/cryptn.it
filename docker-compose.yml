@@ -1,10 +1,27 @@
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PB_EMAIL: ${PB_EMAIL:-admin@admin.com}
+        PB_PASSWORD: ${PB_PASSWORD:-password123}
+
+    volumes:
+      - database:/var/lib/pocketbase/
+
     ports:
-      - '80:3030'
+      - '${EXTERNAL_PORT:-80}:3030'
+      # Expose pocketbase
+      # - '${PB_PORT:-8090}:8090'
+
+    # None of these should be changed
     environment:
-      - dbCollection=cryptdata
-      - dbPORT=8090
-      - PORT=3030
-      - dbURI=http://localhost
+      - DBCRYPT=cryptdata
+      - DBPUBLIC=public
+      - DBRESERVED=reserved
+      - DBPORT=8090
+      - DBURI=http://localhost
+
+volumes:
+  database:

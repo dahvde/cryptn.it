@@ -1,23 +1,33 @@
 <script lang="ts">
 	import Icon, { loadIcon } from '@iconify/svelte';
 	import clsx from 'clsx';
-	interface Props {
-		checked: boolean;
+	import type { HTMLButtonAttributes } from 'svelte/elements';
+
+	interface Props extends HTMLButtonAttributes {
+		selected: number;
 		class?: string;
+		name?: string;
+		extraIcon?: string;
 	}
 
-	let { checked = $bindable(), class: CLASS }: Props = $props();
+	let { selected = $bindable(0), class: CLASS, extraIcon, ...props }: Props = $props();
 
+	const listMax = extraIcon ? 3 : 2;
 	loadIcon('material-symbols:check-rounded');
 </script>
 
 <button
-	class={clsx('p-1 w-6 h-6 flex justify-center items-center', checked ? 'bg-pri-800' : '', CLASS)}
+	class="flex h-6 w-6 items-center justify-center p-1 {CLASS}"
+	class:bg-pri-800={selected}
 	onclick={() => {
-		checked = !checked;
+		selected = (selected + 1) % listMax;
 	}}
+	{...props}
 >
-	{#if checked}
+	{#if selected == 1}
 		<Icon icon="material-symbols:check-rounded" />
+	{/if}
+	{#if extraIcon && selected == 2}
+		<Icon icon={extraIcon} />
 	{/if}
 </button>

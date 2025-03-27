@@ -1,56 +1,61 @@
-// export function formatTimeUnit(seconds: number) {
-// 	const year = 31556926;
-// 	const month = 2628000;
-// 	const day = 86400;
-// 	const hour = 3600;
-// 	const min = 60;
+import { browser } from '$app/environment';
+import { MAXPRIVATEHASH, MINPRIVATEHASH } from './settings';
+import moment from 'moment';
+const CHARSET = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split('');
 
-// 	let fmtString = [];
-// 	let rem = seconds;
+export function genUrl(length: number) {
+	try {
+		if (length > MAXPRIVATEHASH || length < MINPRIVATEHASH) return;
 
-// 	if (seconds < 1) {
-// 		return `${Math.floor(seconds * 1000)}ms`;
-// 	}
+		const arr = new Uint32Array(length);
+		let randStr: string[] = [];
 
-// 	if (rem >= year) {
-// 		const yearCalc = Math.floor(rem / year);
-// 		fmtString.push(`${Math.floor(yearCalc)} Year(s)`);
-// 		rem = seconds % year;
+		crypto.getRandomValues(arr);
 
-// 		if (yearCalc > 5) {
-// 			return fmtString[0];
-// 		}
-// 	}
+		for (let i of arr) {
+			randStr.push(CHARSET[i % CHARSET.length]);
+		}
 
-// 	if (rem >= month) {
-// 		fmtString.push(`${Math.floor(rem / month)} Month(s)`);
-// 		rem = rem % month;
-// 		if (fmtString.length) {
-// 			return fmtString.join(' ');
-// 		}
-// 	}
+		return randStr.join('');
+	} catch (err) {
+		return null;
+	}
+}
 
-// 	if (rem >= day) {
-// 		fmtString.push(`${Math.floor(rem / day)} Day(s)`);
-// 		rem = rem % day;
-// 	}
+export function cnd(condition: boolean, arg: any) {
+	return condition ? arg : '';
+}
 
-// 	if (rem >= hour) {
-// 		fmtString.push(`${Math.floor(rem / hour)} Hour(s)`);
-// 		rem = rem % hour;
-// 		if (fmtString.length) {
-// 			return fmtString.join(' ');
-// 		}
-// 	}
+export function formatNumber(num: number) {
+	if (num >= 1000) {
+		return `${(num / 1000).toFixed(0)}k`;
+	}
+	return num.toString();
+}
 
-// 	if (rem >= min) {
-// 		fmtString.push(`${Math.floor(rem / min)} Min(s)`);
-// 		rem = rem % min;
-// 	}
+export function dateFromNow(date: Date) {
+	const now = new Date();
+	const diff = new Date(now.getTime() - date.getTime());
 
-// 	if (rem >= 1) {
-// 		fmtString.push(`${Math.floor(rem)} Second(s)`);
-// 	}
+	let unit = '';
+	let value = 0;
 
-// 	return fmtString.join(' ');
-// }
+	if (diff.getMinutes() < 60) {
+		unit = 'minute';
+		value = diff.getMinutes() + 1;
+	} else if (diff.getHours() < 24) {
+		unit = 'hour';
+		value = diff.getHours();
+	} else if (diff.getDate() < 30) {
+		unit = 'day';
+		value = diff.getDate();
+	} else if (diff.getMonth() < 12) {
+		unit = 'month';
+		value = diff.getMonth();
+	} else {
+		unit = 'year';
+		value = diff.getFullYear();
+	}
+
+	return `${value === 1 ? (unit === 'hour' ? 'an' : 'a') : value} ${unit}${value === 1 ? '' : 's'} ago`;
+}

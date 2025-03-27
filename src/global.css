@@ -4,32 +4,166 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
+@layer base {
+	:root {
+		--text-50: 242 244 241;
+		--text-100: 228 232 227;
+		--text-200: 201 209 199;
+		--text-300: 175 186 171;
+		--text-400: 148 163 143;
+		--text-500: 121 140 115;
+		--text-600: 97 112 92;
+		--text-700: 73 84 69;
+		--text-800: 48 56 46;
+		--text-900: 24 28 23;
+		--text-950: 12 14 11;
+
+		--background-50: 242 244 241;
+		--background-100: 230 232 227;
+		--background-200: 204 209 199;
+		--background-300: 179 186 171;
+		--background-400: 153 163 143;
+		--background-500: 128 140 115;
+		--background-600: 102 112 92;
+		--background-700: 77 84 69;
+		--background-800: 51 56 46;
+		--background-900: 26 28 23;
+		--background-950: 13 14 11;
+
+		--primary-50: 242 244 240;
+		--primary-100: 229 234 225;
+		--primary-200: 203 213 195;
+		--primary-300: 176 192 165;
+		--primary-400: 150 170 136;
+		--primary-500: 124 149 106;
+		--primary-600: 99 119 85;
+		--primary-700: 74 90 63;
+		--primary-800: 50 60 42;
+		--primary-900: 25 30 21;
+		--primary-950: 12 15 11;
+
+		--secondary-50: 242 245 240;
+		--secondary-100: 228 235 224;
+		--secondary-200: 202 214 194;
+		--secondary-300: 175 194 163;
+		--secondary-400: 149 173 133;
+		--secondary-500: 122 153 102;
+		--secondary-600: 98 122 82;
+		--secondary-700: 73 92 61;
+		--secondary-800: 49 61 41;
+		--secondary-900: 24 31 20;
+		--secondary-950: 12 15 10;
+
+		--accent-50: 242 245 239;
+		--accent-100: 228 236 223;
+		--accent-200: 202 216 192;
+		--accent-300: 175 197 160;
+		--accent-400: 149 177 129;
+		--accent-500: 122 158 97;
+		--accent-600: 98 126 78;
+		--accent-700: 73 95 58;
+		--accent-800: 49 63 39;
+		--accent-900: 24 32 19;
+		--accent-950: 12 16 10;
+	}
+	.dark {
+		--text-50: 12 14 11;
+		--text-100: 24 28 23;
+		--text-200: 48 56 46;
+		--text-300: 73 84 69;
+		--text-400: 97 112 92;
+		--text-500: 121 140 115;
+		--text-600: 148 163 143;
+		--text-700: 175 186 171;
+		--text-800: 201 209 199;
+		--text-900: 228 232 227;
+		--text-950: 242 244 241;
+
+		--background-50: 13 14 11;
+		--background-100: 26 28 23;
+		--background-200: 51 56 46;
+		--background-300: 77 84 69;
+		--background-400: 102 112 92;
+		--background-500: 128 140 115;
+		--background-600: 153 163 143;
+		--background-700: 179 186 171;
+		--background-800: 204 209 199;
+		--background-900: 230 232 227;
+		--background-950: 242 244 241;
+
+		--primary-50: 12 15 11;
+		--primary-100: 25 30 21;
+		--primary-200: 50 60 42;
+		--primary-300: 74 90 63;
+		--primary-400: 99 119 85;
+		--primary-500: 124 149 106;
+		--primary-600: 150 170 136;
+		--primary-700: 176 192 165;
+		--primary-800: 203 213 195;
+		--primary-900: 229 234 225;
+		--primary-950: 242 244 240;
+
+		--secondary-50: 12 15 10;
+		--secondary-100: 24 31 20;
+		--secondary-200: 49 61 41;
+		--secondary-300: 73 92 61;
+		--secondary-400: 98 122 82;
+		--secondary-500: 122 153 102;
+		--secondary-600: 149 173 133;
+		--secondary-700: 175 194 163;
+		--secondary-800: 202 214 194;
+		--secondary-900: 228 235 224;
+		--secondary-950: 242 245 240;
+
+		--accent-50: 12 16 10;
+		--accent-100: 24 32 19;
+		--accent-200: 49 63 39;
+		--accent-300: 73 95 58;
+		--accent-400: 98 126 78;
+		--accent-500: 122 158 97;
+		--accent-600: 149 177 129;
+		--accent-700: 175 197 160;
+		--accent-800: 202 216 192;
+		--accent-900: 228 236 223;
+		--accent-950: 242 245 239;
+	}
+}
+
 :root {
-	--text: 30, 6%, 93%;
+	/* --text: 30, 15%, 8%;
 	--background: 30, 15%, 8%;
 	--primary: 29, 24%, 74%;
 	--secondary: 28, 35%, 35%;
-	--accent: 28, 45%, 57%;
+	--accent: 28, 45%, 57%; */
 
-	--date-picker-background: hsl(var(--background));
-	--date-picker-foreground: hsl(var(--primary));
-	--date-picker-highlight-border: hsl(var(--primary));
+	--border-w: 1px;
+	--border-rad: 6px;
+
+	--date-picker-background: theme('colors.bg.900');
+	--date-picker-foreground: theme('colors.text.200');
+	--date-picker-highlight-border: theme('colors.pri.400');
 	--date-input-width: 100%;
 }
 
-body,
+input[type='password']:focus {
+	@apply outline-none;
+}
+
+svg {
+	color: theme('colors.pri.400');
+}
+
 html {
-	@apply text-text-200;
-	background: hsl(var(--background));
+	@apply h-full bg-bg-950;
+}
+
+body {
+	@apply bg-bg-950 text-text-200;
 	height: 100%;
 }
 
-select {
-	appearance: none;
-}
-
 hr {
-	border-color: hsl(var(--primary), 20%);
+	@apply border-bg-700;
 }
 
 html {
@@ -38,19 +172,25 @@ html {
 
 * {
 	font-family: 'Inter';
+	border-color: theme('colors.bg.700');
 }
 
-button {
+button,
+.anchor-button {
 	background-color: transparent;
 	border: none;
+}
+
+:disabled {
+	filter: brightness(60%);
 }
 
 /* Override default styles */
 .date-time-picker,
 .date-time-field > input {
-	background: hsl(var(--background)) !important;
+	@apply bg-bg-900;
 
-	border: 2px solid hsl(var(--primary), 30%) !important;
+	border: var(--border-w) solid theme('colors.bg.700') !important;
 	padding: 8px !important;
 }
 
@@ -58,13 +198,12 @@ button {
 .date-time-field > input,
 select,
 button,
+.anchor-button,
 textarea,
 input {
-	@apply rounded-md !important;
+	@apply rounded-[var(--border-rad)] bg-transparent;
 
-	background: hsl(var(--background));
-
-	border: 2px solid hsl(var(--primary), 30%);
+	border: var(--border-w) solid theme('colors.bg.700');
 	padding: 8px;
 }
 
@@ -73,32 +212,121 @@ input {
 }
 
 .border {
-	@apply rounded-md !important;
+	@apply rounded-[var(--border-rad)];
 
-	background: hsl(var(--background));
-
-	border: 2px solid hsl(var(--primary), 30%);
+	border: var(--border-w) solid theme('colors.bg.700');
 }
 
 textarea:focus,
 input[type='text']:focus {
 	outline: none;
-	border-color: hsl(var(--primary), 90%);
+
+	@apply border-pri-400;
 }
 
 textarea::placeholder,
 input::placeholder {
 	@apply select-none;
-	color: hsl(var(--primary), 20%);
+	color: theme('colors.bg.700');
 }
 
 input[type='checkbox'] {
 	@apply p-3;
-	border: 2px solid red;
+}
+
+::-webkit-scrollbar {
+	@apply h-1 w-1;
+	background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	@apply h-12 rounded-[var(border-rad)] bg-pri-800;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	cursor: pointer;
+}
+
+::-webkit-scrollbar {
+	background-color: transparent;
+	width: 0.4rem;
+	height: 0.4rem;
 }
 
 @media only screen and (max-width: 768px) {
 	html {
-		font-size: 10px;
+		font-size: 12px;
 	}
+}
+
+.cm-editor {
+	@apply !font-mono;
+	background: transparent !important;
+	min-height: 0px !important;
+}
+
+.cm-line,
+.cm-line > span,
+.cm-gutterElement {
+	@apply !font-mono;
+}
+
+.cm-gutterElement {
+	@apply ml-4;
+}
+
+.cm-line {
+	@apply mr-4 text-base text-bg-200;
+}
+
+.cm-gutter {
+	@apply !font-mono;
+	border-right: 1px solid theme('colors.bg.700');
+	backdrop-filter: blur(10px);
+}
+
+.cm-focused {
+	outline: none !important;
+}
+
+/* .cm-scroller {
+	@apply !overflow-visible;
+} */
+
+input[type='date']::-webkit-calendar-picker-indicator {
+	filter: invert(0.7); /* This will make it a light gray color */
+	cursor: pointer;
+}
+
+select {
+	@apply appearance-none bg-bg-950;
+}
+
+select::-webkit-listbox {
+	@apply bg-bg-900;
+}
+
+select:focus {
+	outline: none;
+}
+
+select option:hover,
+select option:focus,
+select option:active {
+	@apply bg-bg-800;
+}
+
+select > option {
+	font-family:
+		system-ui,
+		-apple-system,
+		BlinkMacSystemFont,
+		'Segoe UI',
+		Roboto,
+		Oxygen,
+		Ubuntu,
+		Cantarell,
+		'Open Sans',
+		'Helvetica Neue',
+		sans-serif;
 }

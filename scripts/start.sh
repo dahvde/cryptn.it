@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # Start the first process
+export PORT=3030
 node /app/build/index.js &
 
 # Start the second process
-/app/db/pocketbase serve &
+/var/lib/pocketbase/run serve --http 0.0.0.0:8090 &
 
 # Wait for any process to exit
 wait -n

@@ -29,3 +29,13 @@ vite.config.ts.timestamp-*
 
 db/pocketbase
 db/pb_data
+
+.cursorrules
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+docker-reset.sh
