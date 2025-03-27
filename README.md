@@ -63,7 +63,7 @@ cd cryptn.it
 ```
 
 ```
-docker-compose down --rmi all
+docker-compose down --rmi all --volumes --remove-orphans
 ```
 
 ## HTTPS Requirement
