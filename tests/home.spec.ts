@@ -1,7 +1,6 @@
-import settings from '$lib/settings';
+import settings from '../src/lib/settings';
 import { test, expect, type Page } from '@playwright/test';
 import { format } from 'date-fns';
-import { buildErrorMessage } from 'vite';
 
 test('valid text input', async ({ page }) => {
 	await page.goto('/');
