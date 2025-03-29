@@ -28,7 +28,7 @@
 		},
 		urlLength: 13,
 		burn: false,
-		expire: 60 * 24,
+		expire: 0,
 		public: false,
 		zk: true,
 		title: '',
