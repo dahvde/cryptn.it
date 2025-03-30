@@ -3,6 +3,10 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
 	plugins: [sveltekit()],
+	build: {
+		minify: 'terser',
+		sourcemap: false
+	},
 
 	server: {
 		port: 3030
