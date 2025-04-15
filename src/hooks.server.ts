@@ -3,7 +3,7 @@ import { getStore, TEXTResponse, type QueryData } from '$lib';
 import { error, text } from '@sveltejs/kit';
 import { UrlStoreDecrypt, UrlStore } from '$lib/crypt';
 
-const routes = ['/api', '/raw', '/r'];
+const routes = ['/api', '/raw', '/r/'];
 const validUrl = /^([A-Z0-9a-z]+$)/;
 
 /** @type {import('@sveltejs/kit').Handle} */
@@ -15,7 +15,7 @@ export async function handle({ event, resolve }) {
 	const isBot =
 		userAgent.includes('bot') || userAgent.includes('crawler') || userAgent.includes('curl');
 
-	if (!validUrl.test(event.url.pathname.substring(1))) return error(404, 'Invalid url');
+	// if (!validUrl.test(event.url.pathname.substring(1))) throw error(400, "Not Found")
 
 	if (isBot) {
 		try {
@@ -56,8 +56,12 @@ export async function handle({ event, resolve }) {
 	return resolve(event);
 }
 
-// Optional: If you want type safety in your hooks
-// src/app.d.ts
+// Disable all error logging
+export function handleError({ error, event }) {
+	// @ts-ignore
+	return { message: error.status };
+}
+
 declare global {
 	namespace App {
 		interface Platform {}
