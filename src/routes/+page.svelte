@@ -10,6 +10,7 @@
 	import { ALLOWEDFORMATS } from '$lib/settings';
 	import Select from '$lib/components/Select.svelte';
 	import { onMount } from 'svelte';
+	import QRCode from '$lib/components/QRCode.svelte';
 
 	let customExpire = $state({ state: 0, date: null });
 
@@ -18,12 +19,34 @@
 
 	let focusEvents = $state({ editor: false, select: false });
 
+	let qr = $state({
+		open: false,
+		plain: true,
+		code: null
+	});
+
+	type Response = {
+		password: string;
+		link: URL | null;
+		created: boolean;
+		hash: string;
+		zk: boolean;
+	};
+
+	let response: Response = $state({
+		password: '',
+		hash: '',
+		link: null,
+		zk: true,
+		created: false
+	});
+
 	let payload = $state({
 		input: '',
 		link: '',
 		password: {
 			state: 0,
-			text: null,
+			text: '',
 			focused: false
 		},
 		urlLength: 13,
@@ -99,7 +122,15 @@
 
 			if (!res.ok) throw new Error('Error creating post');
 
-			payload.link = window.location + resJson.data.url;
+			payload.link = window.location.host + '/' + resJson.data.url;
+
+			response = {
+				password: payload.password.text,
+				created: true,
+				link: new URL(window.location + resJson.data.url),
+				hash: resJson.data.url,
+				zk: payload.zk
+			};
 		} catch (err) {
 			if (import.meta.env.DEV) {
 				console.error(err);
@@ -125,6 +156,16 @@
 		'material-symbols:expand-more-rounded'
 	]);
 </script>
+
+{#if response.created}
+	<QRCode
+		class="z-30"
+		bind:link={response.link}
+		password={response.password}
+		zk={response.zk}
+		bind:open={qr.open}
+	/>
+{/if}
 
 <div class="wrap m-auto mt-8 text-lg">
 	<!-- Main Container -->
@@ -208,7 +249,7 @@
 						e.preventDefault();
 						e.stopPropagation();
 						if (!payload.error && payload.link.length !== 0) {
-							window.open(payload.link, '_blank');
+							window.open(`/${response.hash}`, '_blank');
 						}
 					}}
 					type="text"
@@ -218,10 +259,23 @@
 					class="border-none pl-0"
 					title="Copy"
 					onclick={() => {
-						navigator.clipboard.writeText(payload.link);
+						if (response.link == null) return;
+
+						navigator.clipboard.writeText(response.link.toString());
 					}}
 				>
 					<Icon icon="material-symbols:content-copy-outline-rounded" />
+				</button>
+				<button
+					class="border-none pl-0"
+					title="QR Code"
+					onclick={() => {
+						if (response.created) {
+							qr.open = true;
+						}
+					}}
+				>
+					<Icon icon="material-symbols:qr-code-rounded" />
 				</button>
 			</div>
 

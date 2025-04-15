@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Modal from '$lib/components/Modal.svelte';
+	import QRCode from '$lib/components/QRCode.svelte';
 	import { page } from '$app/stores';
 	import { UrlStore } from '$lib/crypt';
 	import Icon, { loadIcons } from '@iconify/svelte';
@@ -19,10 +19,10 @@
 	let store = new UrlStore('', encText, $page.data.title, $page.data.salt, iv, '');
 	let unlocked = $state(false);
 	let kbSize = $state(0);
-	let qrDialog: HTMLDialogElement;
-	let qrPlain = $state(true);
-	let qrCode: any = $state(null);
-	let rawLink = $state('');
+	let qr = $state({
+		open: false,
+		link: $page.url
+	});
 
 	let extensions: Extension[] = $state([]);
 
@@ -82,19 +82,6 @@
 		if ($page.data.zk) {
 			password = '';
 		}
-
-		rawLink = `${window.location.origin}/raw${window.location.pathname}${cnd($page.data.password, `?p=${password}`)}`;
-
-		// @ts-ignore
-		qrCode = new QRCode('qrcode', {
-			text: '',
-			width: 300,
-			height: 300,
-			colorDark: `rgb(${getComputedStyle(document.documentElement).getPropertyValue('--primary-300')})`,
-			colorLight: '#ffffff00',
-			// @ts-ignore
-			correctLevel: QRCode.CorrectLevel.L
-		});
 	}
 
 	function scroll(top: boolean) {
@@ -102,16 +89,6 @@
 
 		textArea.scrollTop = top ? 0 : textArea.scrollHeight;
 	}
-
-	$effect(() => {
-		if (!qrCode) return;
-
-		if (qrPlain) {
-			qrCode.makeCode(window.location.href);
-		} else {
-			qrCode.makeCode(rawLink);
-		}
-	});
 
 	loadIcons([
 		'material-symbols:content-copy-outline-rounded',
@@ -122,10 +99,6 @@
 		'material-symbols:lock'
 	]);
 </script>
-
-<svelte:head>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-</svelte:head>
 
 <div class="relative m-auto mt-8 w-[90%] max-w-[1000px] rounded-sm border-[1px]">
 	<div class="grid grid-cols-[1fr_auto] justify-between border-b-[1px]">
@@ -166,7 +139,7 @@
 					title="QR Code"
 					class="!rounded-none border-[0px] border-l-[1px] p-3"
 					onclick={() => {
-						qrDialog.showModal();
+						qr.open = true;
 					}}
 				>
 					<Icon icon="material-symbols:qr-code-2" />
@@ -278,23 +251,26 @@
 	</div>
 {/if}
 
-<Modal initialOpen={false} bind:element={qrDialog} title="QR Code">
-	<div>
+{#if unlocked}
+	<QRCode {password} class="z-30" link={new URL(qr.link)} zk={$page.data.zk} bind:open={qr.open} />
+{/if}
+
+<!-- <div>
 		<div class="p-2" id="qrcode"></div>
 		{#if !$page.data.zk}
 			<div class="flex w-full border-t-[1px] text-sm text-text-400">
 				<button
-					class="flex-1 rounded-none border-0 border-l-[1px] p-2 {cnd(qrPlain, 'bg-bg-800')}"
-					onclick={() => (qrPlain = true)}>PLAIN</button
+					class="flex-1 rounded-none border-0 border-l-[1px] p-2 {cnd(qr.plain, 'bg-bg-800')}"
+					onclick={() => (qr.plain = true)}>PLAIN</button
 				>
 				<button
-					class="flex-1 rounded-none border-0 p-2 {cnd(!qrPlain, 'bg-bg-800')}"
-					onclick={() => (qrPlain = false)}>RAW</button
+					class="flex-1 rounded-none border-0 p-2 {cnd(!qr.plain, 'bg-bg-800')}"
+					onclick={() => (qr.plain = false)}>RAW</button
 				>
 			</div>
 		{/if}
 	</div>
-</Modal>
+</QRCode> -->
 
 <style>
 	li::marker {
